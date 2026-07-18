@@ -24,8 +24,24 @@
 set -euo pipefail
 
 # ---------- 配置 ----------
-PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-WORK_DIR="$PROJECT_DIR/build"
+# 项目根目录 = 仓库根（含 project.yml 的目录）
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+# 兜底：如果当前推算出的 PROJECT_DIR 没有 project.yml，往上找
+if [ ! -f "$PROJECT_DIR/project.yml" ]; then
+    CUR="$SCRIPT_DIR"
+    while [ "$CUR" != "/" ]; do
+        if [ -f "$CUR/project.yml" ]; then
+            PROJECT_DIR="$CUR"
+            break
+        fi
+        CUR="$(dirname "$CUR")"
+    done
+fi
+[ -f "$PROJECT_DIR/project.yml" ] || { echo "❌ 找不到 project.yml（从 $SCRIPT_DIR 起向上查找）"; exit 1; }
+
+WORK_DIR="$PROJECT_DIR/build_output"
 DERIVED_DATA="$WORK_DIR/DerivedData"
 IPA_OUT="$WORK_DIR/NotificationForwarder.ipa"
 

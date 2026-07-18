@@ -28,18 +28,18 @@ jobs:
 
       - name: Verify IPA
         run: |
-          ls -la build/NotificationForwarder.ipa
-          unzip -l build/NotificationForwarder.ipa | head -40
+          ls -la build_output/NotificationForwarder.ipa
+          unzip -l build_output/NotificationForwarder.ipa | head -40
 
       - uses: actions/upload-artifact@v4
         with:
           name: NotificationForwarder-ipa
-          path: build/NotificationForwarder.ipa
+          path: build_output/NotificationForwarder.ipa
           retention-days: 90
 
       - name: Release on tag
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: build/NotificationForwarder.ipa
+          files: build_output/NotificationForwarder.ipa
           generate_release_notes: true
