@@ -61,7 +61,7 @@ struct RuleEditView: View {
                         } label: {
                             HStack {
                                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                                    .foregroundStyle(isSelected ? .tint : .secondary)
+                                    .foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
                                 Text(target.name)
                                 Spacer()
                                 Text(target.type.displayName).font(.caption).foregroundStyle(.secondary)
