@@ -32,9 +32,8 @@ public enum AttachmentCollector {
         // 1) 系统已下载的附件
         for att in content.attachments.prefix(maxFiles) {
             let url = att.url
-            let mime = att.typeIdentifier.isEmpty
-                ? PushAttachment.inferMIME(from: url.lastPathComponent)
-                : att.typeIdentifier
+            // typeIdentifier 是 UTI（如 public.jpeg），不是 MIME；统一用文件名推断 MIME 更可靠
+            let mime = PushAttachment.inferMIME(from: url.lastPathComponent)
             let size = (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int64) ?? 0
             result.append(PushAttachment(
                 localURL: url,

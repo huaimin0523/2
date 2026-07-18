@@ -41,7 +41,8 @@ public final class ConfigStore {
         var coordinationError: NSError?
         var readError: Error?
         var data: Data?
-        NSFileCoordinator.coordinateReadingItem(at: url, options: [], error: &coordinationError) { newURL in
+        let coordinator = NSFileCoordinator()
+        coordinator.coordinate(readingItemAt: url, options: [], error: &coordinationError) { newURL in
             do { data = try Data(contentsOf: newURL) }
             catch { readError = error }
         }
@@ -60,7 +61,8 @@ public final class ConfigStore {
         let data = try encoder.encode(config)
         var coordinationError: NSError?
         var writeError: Error?
-        NSFileCoordinator.coordinateWritingItem(at: url, options: .forReplacing, error: &coordinationError) { newURL in
+        let coordinator = NSFileCoordinator()
+        coordinator.coordinate(writingItemAt: url, options: .forReplacing, error: &coordinationError) { newURL in
             do {
                 try data.write(to: newURL, options: [.atomic])
             } catch {

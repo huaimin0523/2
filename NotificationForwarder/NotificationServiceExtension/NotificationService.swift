@@ -33,11 +33,15 @@ class NotificationService: UNNotificationServiceExtension {
 
         // 1) 解析事件
         let content = request.content
-        let userInfoStrings = content.userInfo.compactMapValues { value -> String? in
-            if let s = value as? String { return s }
-            if let data = try? JSONSerialization.data(withJSONObject: value),
-               let s = String(data: data, encoding: .utf8) { return s }
-            return nil
+        var userInfoStrings: [String: String] = [:]
+        for (key, value) in content.userInfo {
+            guard let k = key as? String else { continue }
+            if let s = value as? String {
+                userInfoStrings[k] = s
+            } else if let data = try? JSONSerialization.data(withJSONObject: value),
+                      let s = String(data: data, encoding: .utf8) {
+                userInfoStrings[k] = s
+            }
         }
 
         // 1.5) 采集附件：系统已下载的 + 自定义字段里的远程 URL 手动下载
@@ -54,7 +58,7 @@ class NotificationService: UNNotificationServiceExtension {
             body: content.body,
             subtitle: content.subtitle,
             badge: content.badge?.intValue,
-            sound: content.sound as? String,
+            sound: nil,  // UNNotificationSound 不能直接转 String，跳过
             userInfo: userInfoStrings,
             receivedAt: Date(),
             sourceBundleID: request.content.threadIdentifier.isEmpty ? nil : request.content.threadIdentifier,
