@@ -56,6 +56,11 @@ final class ConfigManager: ObservableObject {
         save()
     }
 
+    func moveTarget(from source: IndexSet, to destination: Int) {
+        config.targets.move(fromOffsets: source, toOffset: destination)
+        save()
+    }
+
     // MARK: - Rules
 
     func upsertRule(_ rule: ForwardRule) {

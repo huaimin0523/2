@@ -63,8 +63,7 @@ struct TargetListView: View {
     }
 
     private func move(from source: IndexSet, to destination: Int) {
-        configManager.config.targets.move(fromOffsets: source, toOffset: destination)
-        configManager.save()
+        configManager.moveTarget(from: source, to: destination)
     }
 }
 
@@ -75,7 +74,7 @@ private struct TargetRow: View {
         HStack(spacing: 12) {
             Image(systemName: icon)
                 .font(.title3)
-                .foregroundStyle(target.enabled ? .tint : .secondary)
+                .foregroundStyle(target.enabled ? Color.accentColor : Color.secondary)
                 .frame(width: 28)
             VStack(alignment: .leading, spacing: 2) {
                 Text(target.name).font(.headline)
