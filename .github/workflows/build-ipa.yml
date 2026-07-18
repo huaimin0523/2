@@ -1,0 +1,50 @@
+name: build-ipa
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          brew install ldid xcodegen mise || true
+          mise install swift || true
+
+      - name: Generate Xcode project
+        run: |
+          cd NotificationForwarder
+          xcodegen generate
+
+      - name: Show project
+        run: |
+          ls -la NotificationForwarder/
+          find NotificationForwarder -name "*.xcodeproj" -maxdepth 2
+
+      - name: Build IPA
+        run: |
+          chmod +x build/scripts/build_ipa.sh
+          ./build/scripts/build_ipa.sh com.notificationforwarder.app
+
+      - name: Verify IPA
+        run: |
+          ls -la build/NotificationForwarder.ipa
+          unzip -l build/NotificationForwarder.ipa | head -40
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NotificationForwarder-ipa
+          path: build/NotificationForwarder.ipa
+          retention-days: 90
+
+      - name: Release on tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/NotificationForwarder.ipa
+          generate_release_notes: true

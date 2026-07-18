@@ -1,0 +1,22 @@
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+build/NotificationForwarder.xcarchive
+build/DerivedData
+build/NotificationForwarder.ipa
+build/Payload
+
+# macOS
+.DS_Store
+*.swp
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Package.resolved
+
+# Misc
+*.log
+*.zip

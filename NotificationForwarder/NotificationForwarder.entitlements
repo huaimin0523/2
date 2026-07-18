@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- 主 App Entitlements（TrollStore 版本） -->
+	<!-- TrollStore 通过 CoreTrust bypass 接受任意 entitlements，无需 Apple 后台注册 -->
+
+	<!-- 推送环境。TrollStore 安装的 App 通常收不到真实 APNs（证书链问题），
+	     但保留此声明不会导致安装失败，且某些版本（带正确 APNs 证书链）可正常工作。 -->
+	<key>com.apple.developer.aps-environment</key>
+	<string>development</string>
+
+	<!-- App Group。主 App 与 Extension 必须声明同一个 group ID。
+	     TrollStore 不要求此 group 在 Apple 后台注册，只要 entitlements 声明即可生效。 -->
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.notificationforwarder.shared</string>
+	</array>
+
+	<!-- 允许后台网络请求（Extension 转发时需要） -->
+	<key>com.apple.developer.networking.networkextension</key>
+	<array/>
+
+	<!-- 后台模式：远程推送唤醒 -->
+	<key>com.apple.developer.usernotifications.communication</key>
+	<true/>
+</dict>
+</plist>

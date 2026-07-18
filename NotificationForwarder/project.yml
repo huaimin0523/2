@@ -1,0 +1,88 @@
+name: NotificationForwarder
+options:
+  bundleIdPrefix: com.notificationforwarder
+  deploymentTarget:
+    iOS: "15.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    IPHONEOS_DEPLOYMENT_TARGET: "15.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    ENABLE_BITCODE: NO
+    CODE_SIGNING_REQUIRED: NO
+    CODE_SIGNING_ALLOWED: NO
+    CODE_SIGN_IDENTITY: ""
+    DEVELOPMENT_TEAM: ""
+    AD_HOC_CODE_SIGNING_ALLOWED: YES
+
+targets:
+  NotificationForwarder:
+    type: application
+    platform: iOS
+    sources:
+      - path: NotificationForwarder
+        excludes:
+          - "Info.plist"
+      - path: ../Shared
+    resources:
+      - path: NotificationForwarder/Info.plist
+        type: file
+    info:
+      path: NotificationForwarder/Info.plist
+      properties:
+        CFBundleDisplayName: 推送转发
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        UILaunchScreen: {}
+        UIBackgroundModes:
+          - remote-notification
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+    dependencies:
+      - target: NotificationServiceExtension
+        embed: true
+        codeSign: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.notificationforwarder.app
+        PRODUCT_NAME: NotificationForwarder
+        CODE_SIGN_ENTITLEMENTS: NotificationForwarder.entitlements
+        INFOPLIST_FILE: NotificationForwarder/Info.plist
+
+  NotificationServiceExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: NotificationServiceExtension
+        excludes:
+          - "Info.plist"
+      - path: ../Shared
+    info:
+      path: NotificationServiceExtension/Info.plist
+      properties:
+        CFBundleDisplayName: 推送转发服务
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.usernotifications.service
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).NotificationService
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.notificationforwarder.app.service
+        PRODUCT_NAME: NotificationServiceExtension
+        CODE_SIGN_ENTITLEMENTS: NotificationServiceExtension.entitlements
+        INFOPLIST_FILE: NotificationServiceExtension/Info.plist
+
+schemes:
+  NotificationForwarder:
+    build:
+      targets:
+        NotificationForwarder: all
+        NotificationServiceExtension: all
+    run:
+      config: Debug
+    archive:
+      config: Release

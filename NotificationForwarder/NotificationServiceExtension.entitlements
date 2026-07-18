@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Notification Service Extension Entitlements（TrollStore 版本） -->
+
+	<!-- Extension 不需要单独的 aps-environment，继承主 App 的设置 -->
+
+	<!-- App Group：必须与主 App 完全一致 -->
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.notificationforwarder.shared</string>
+	</array>
+
+	<!-- 允许 Extension 进行网络请求 -->
+	<key>com.apple.developer.networking.networkextension</key>
+	<array/>
+</dict>
+</plist>
