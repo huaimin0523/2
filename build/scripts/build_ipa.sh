@@ -50,15 +50,15 @@ rm -rf "$WORK_DIR"
 mkdir -p "$WORK_DIR"
 
 # ---------- 0. 用 xcodegen 生成 Xcode 工程（如未生成） ----------
-SOURCE_DIR="$PROJECT_DIR/NotificationForwarder"
-if [ ! -d "$SOURCE_DIR/NotificationForwarder.xcodeproj" ]; then
+# project.yml 位于仓库根目录
+if [ ! -d "$PROJECT_DIR/NotificationForwarder.xcodeproj" ]; then
     echo ""
     echo "⚙️  [0/5] 用 xcodegen 生成 Xcode 工程..."
     if ! command -v xcodegen >/dev/null 2>&1; then
         echo "   安装 xcodegen: brew install xcodegen"
         brew install xcodegen || { echo "❌ xcodegen 安装失败"; exit 1; }
     fi
-    (cd "$SOURCE_DIR" && xcodegen generate) || { echo "❌ xcodegen 失败"; exit 1; }
+    (cd "$PROJECT_DIR" && xcodegen generate) || { echo "❌ xcodegen 失败"; exit 1; }
 fi
 
 # ---------- 1. xcodebuild archive（不签名，只编译） ----------
@@ -68,8 +68,6 @@ echo "🔨 [1/5] 编译工程（不签名）..."
 # 找 .xcodeproj / .xcworkspace
 PROJECT_PATH=""
 for cand in \
-    "$SOURCE_DIR/NotificationForwarder.xcodeproj" \
-    "$SOURCE_DIR/NotificationForwarder.xcworkspace" \
     "$PROJECT_DIR/NotificationForwarder.xcodeproj" \
     "$PROJECT_DIR/NotificationForwarder.xcworkspace"; do
     if [ -e "$cand" ]; then

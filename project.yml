@@ -23,15 +23,12 @@ targets:
     type: application
     platform: iOS
     sources:
-      - path: NotificationForwarder
+      - path: NotificationForwarder/NotificationForwarder
         excludes:
           - "Info.plist"
-      - path: ../Shared
-    resources:
-      - path: NotificationForwarder/Info.plist
-        type: file
+      - path: NotificationForwarder/Shared
     info:
-      path: NotificationForwarder/Info.plist
+      path: NotificationForwarder/NotificationForwarder/Info.plist
       properties:
         CFBundleDisplayName: 推送转发
         CFBundleShortVersionString: "1.0"
@@ -49,19 +46,19 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.notificationforwarder.app
         PRODUCT_NAME: NotificationForwarder
-        CODE_SIGN_ENTITLEMENTS: NotificationForwarder.entitlements
-        INFOPLIST_FILE: NotificationForwarder/Info.plist
+        CODE_SIGN_ENTITLEMENTS: NotificationForwarder/NotificationForwarder.entitlements
+        INFOPLIST_FILE: NotificationForwarder/NotificationForwarder/Info.plist
 
   NotificationServiceExtension:
     type: app-extension
     platform: iOS
     sources:
-      - path: NotificationServiceExtension
+      - path: NotificationForwarder/NotificationServiceExtension
         excludes:
           - "Info.plist"
-      - path: ../Shared
+      - path: NotificationForwarder/Shared
     info:
-      path: NotificationServiceExtension/Info.plist
+      path: NotificationForwarder/NotificationServiceExtension/Info.plist
       properties:
         CFBundleDisplayName: 推送转发服务
         CFBundleShortVersionString: "1.0"
@@ -73,8 +70,8 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.notificationforwarder.app.service
         PRODUCT_NAME: NotificationServiceExtension
-        CODE_SIGN_ENTITLEMENTS: NotificationServiceExtension.entitlements
-        INFOPLIST_FILE: NotificationServiceExtension/Info.plist
+        CODE_SIGN_ENTITLEMENTS: NotificationForwarder/NotificationServiceExtension.entitlements
+        INFOPLIST_FILE: NotificationForwarder/NotificationServiceExtension/Info.plist
 
 schemes:
   NotificationForwarder:

@@ -13,18 +13,13 @@ jobs:
 
       - name: Install tools
         run: |
-          brew install ldid xcodegen mise || true
-          mise install swift || true
+          brew install ldid xcodegen
 
       - name: Generate Xcode project
         run: |
-          cd NotificationForwarder
           xcodegen generate
-
-      - name: Show project
-        run: |
-          ls -la NotificationForwarder/
-          find NotificationForwarder -name "*.xcodeproj" -maxdepth 2
+          ls -la
+          find . -name "*.xcodeproj" -maxdepth 2
 
       - name: Build IPA
         run: |
